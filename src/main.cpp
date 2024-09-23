@@ -27,7 +27,7 @@ void setup() {
   my_timer = millis();   // "сбросить" таймер
   FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);  // GRB ordering is assumed
 
-  fill_rainbow_circular(leds, NUM_LEDS, 0, false);
+//  fill_rainbow_circular(leds, NUM_LEDS, 0, false);
 
     FastLED.show();
 
@@ -39,17 +39,16 @@ void loop() {
     static uint8_t pos = 0; //позиция диода
     my_timer = millis();   // "сбросить" таймер
     
-    pos = (pos + 1) % NUM_LEDS; 
+    pos = (pos + 1) % 255; 
     Serial.print("poss = ");
     Serial.println(pos);
     
     //fill_palette_circular(leds, NUM_LEDS, 0, RainbowColors_p); //заливаем (масштабируя) ленту по политре
 
-    
-    zoomRegion(leds, RainbowColors_p , pos, 8, 250 , NUM_LEDS);
+//    zoomRegion(leds, RainbowColors_p , pos, 8, 250 , NUM_LEDS);
 //    fill_rainbow_circular(leds, NUM_LEDS, 0, false);
-    blurFade(leds, pos,8, 96, NUM_LEDS);
- 
+//    blurFade(leds, pos,8, 96, NUM_LEDS);
+    choseFromPal(leds, NUM_LEDS, RainbowColors_p, pos, RIGHT_TALE, 5); 
     FastLED.show();
   }
   

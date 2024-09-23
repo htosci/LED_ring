@@ -158,16 +158,77 @@ void zoomRegion(
         Serial.print(pixIndex);
         Serial.print("] = ");
         Serial.println(mapLedInPallette[pixIndex]);
-
-        
-
-
-
-        
-
-
     }
     delay(100);
 
         map_data_into_colors_through_palette(mapLedInPallette, num_leds, leds,targetPalette);
 }
+
+
+//Выбор из палитры с растущей полоской от нулевого пикселя
+void choseFromPal(    
+    CRGB* leds,     //массив с лентой
+    uint8_t num_leds,     //количество диодов в массиве    
+    CRGBPalette16 targetPalette,        //палитра из которой выбираем
+    uint8_t val,        //(0-255) выбранное значение из палитры
+    mode grow_mode,       // (RIGHT, LEFT, LEFT_TAIL, RIGHT_TAIL) метод роста, LEFT - голова ростёт на лево от argetPixel )
+    uint16_t targetPixel){      //номер диода на ленте, который будет началом       
+
+    uint8_t scale = (255 / num_leds); 
+    uint16_t tailLenght = (val * num_leds / 255); //3
+
+    uint16_t headeIndex = 0;
+    int8_t lightDirection = 1;
+    int8_t tailDirection = 1;
+
+    switch (grow_mode)
+    {
+    case RIGHT:
+        lightDirection = 1;
+        tailDirection = 0;
+        headeIndex = (targetPixel + tailLenght * lightDirection + num_leds) % num_leds;
+        break;
+    case LEFT:
+        lightDirection = -1;
+        tailDirection = 0;
+        headeIndex = (targetPixel + tailLenght * lightDirection + num_leds) % num_leds;
+        break;
+    case RIGHT_TALE:
+        lightDirection = -1;
+        tailDirection = 1;
+        headeIndex = targetPixel;
+        break;
+    case LEFT_TAIL:
+        lightDirection = 1;
+        tailDirection = -1;
+        headeIndex = targetPixel ;
+        break;
+    default:
+        break;
+    }
+
+    fill_solid(leds, num_leds, CRGB::Black);
+
+    for(uint8_t i = 0; i < tailLenght ; i++ ){
+        uint8_t iIndex = (lightDirection * i  + targetPixel + num_leds + tailDirection * tailLenght) % num_leds;
+
+        Serial.print("i = ");
+        Serial.print(i);
+        Serial.print(" > iIndex = ");
+        Serial.print(iIndex);
+        Serial.print(" > color = ");
+        Serial.println( i * 255 / num_leds);
+
+        leds[iIndex] = ColorFromPalette(targetPalette, ( i * 255 / num_leds) );
+    }
+    leds[headeIndex] = ColorFromPalette(targetPalette, val);
+
+    Serial.print("val = ");
+    Serial.print(val);
+    Serial.print("  >>  headeIndex = ");
+    Serial.print(headeIndex);
+    Serial.print("  >>  tailLenght = ");
+    Serial.print(tailLenght);
+    Serial.print("  >>  mode_my = ");
+    Serial.println(grow_mode);
+    }
