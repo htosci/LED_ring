@@ -9,7 +9,7 @@
       "id": "ring1",
       "top": -234.49,
       "left": -313.17,
-      "attrs": { "pixels": "60" }
+      "attrs": { "pixels": "12" }
     },
     { "type": "wokwi-potentiometer", "id": "pot1", "top": -222.1, "left": -153.8, "attrs": {} },
     { "type": "wokwi-vcc", "id": "vcc1", "top": -37.64, "left": -384, "attrs": {} },

@@ -21,17 +21,18 @@ void blurFade(
     uint8_t num_leds) ;     //количество диодов в массиве
 
 
-//Увеличение масштаба по сторонам от centerPixel(maxZoom) на range пикселей с плавным заполнением остального
+//Увеличение масштаба по сторонам от val(maxZoom) на range пикселей с плавным заполнением остального
 void zoomRegion(    
     CRGB* leds,     //массив с лентой
     CRGBPalette16 targetPalette,        //палитра по которой заливают
-    uint16_t centerPixel,       //позиция ценртального пикселя, с максимальным масштабом
+    uint8_t val,       //(0-255)позиция пикселя на палитре, с максимальным масштабом
     uint8_t range,      //расстояние от точки с максимальным значением, до точки, где эначение равно нулю
     uint8_t maxZoom,        //(0-255) максимальный зум * 1/16 ( 8=2:1 ; 16 = 1:1 ; 32 = 2:1 ; 255 = (15+15/16):1 )
-    uint8_t num_leds);     //количество диодов в массиве
-#endif
+    uint8_t num_leds,     //количество диодов в массиве
+    uint8_t startPixel = 0 ) ;     //номер диода на ленте, который будет началом   
 
-enum  mode{RIGHT, LEFT, LEFT_TAIL, RIGHT_TALE } ;
+
+enum  mode{ RIGHT, LEFT, LEFT_TAIL, RIGHT_TALE } ;
 
 //Выбор из палитры с растущей полоской от нулевого пикселя
 void choseFromPal(    
@@ -39,5 +40,8 @@ void choseFromPal(
     uint8_t num_leds,     //количество диодов в массиве    
     CRGBPalette16 targetPalette,        //палитра из которой выбираем
     uint8_t val,        //(0-255) выбранное значение из палитры
-    mode grow_mode,       // (RIGHT, LEFT, LEFT_TAIL, RIGHT_TAIL) метод роста, LEFT - голова ростёт по часовой стрелке от argetPixel )
-    uint16_t targetPixel = 0);      //номер диода на ленте, который будет началом    
+    mode grow_mode = RIGHT,       // (RIGHT, LEFT, LEFT_TAIL, RIGHT_TAIL) метод роста, LEFT - голова ростёт по часовой стрелке от argetPixel )
+    uint16_t startPixel = 0);      //номер диода на ленте, который будет началом       
+    
+    
+    #endif
